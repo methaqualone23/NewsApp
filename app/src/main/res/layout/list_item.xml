@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+        <TextView
+            android:id="@+id/author"
+            style="@style/Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Author" />
+
+        <TextView
+            android:id="@+id/webTitle"
+            style="@style/TextMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Long placeholder location that should wrap to more than 2 lines of text" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/TextDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="webPublicationDate" />
+</LinearLayout>

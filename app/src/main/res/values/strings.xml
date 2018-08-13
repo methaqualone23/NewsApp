@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Guardian News</string>
+    <string name="empty_placeholder">No articles found.</string>
+    <string name="no_connection">No Internet connection.</string>
+</resources>
