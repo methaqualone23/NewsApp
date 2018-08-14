@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
     private static final String GUARDIAN_WORLD_REQUEST_URL =
-            "https://content.guardianapis.com/search?order-by=newest&q=world%20news&api-key=6fe977cd-ab92-4c04-add2-c38014fd464a";
+            ("https://content.guardianapis.com/search?show-tags=contributor&q=world%20news&api-key=" + BuildConfig.GUARDIAN_API_TOKEN);
 
     private static final int NEWS_LOADER_ID = 1;
     private NewsAdapter currentAdapter;
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(NEWS_LOADER_ID, null, this);
         } else {
-           ProgressBar progress = findViewById(R.id.progressbar);
-           progress.setVisibility(View.GONE);
+            ProgressBar progress = findViewById(R.id.progressbar);
+            progress.setVisibility(View.GONE);
             emptyPlaceholder.setText(R.string.no_connection);
         }
     }

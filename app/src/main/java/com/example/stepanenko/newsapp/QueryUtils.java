@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 public final class QueryUtils {
 
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
@@ -31,11 +32,6 @@ public final class QueryUtils {
     public static List<News> fetchNewsData(String requestUrl) {
         URL url = createUrl(requestUrl);
         String jsonResponse = null;
-/*        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
@@ -72,7 +68,7 @@ public final class QueryUtils {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == urlConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -114,19 +110,28 @@ public final class QueryUtils {
 
         try {
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
-
             JSONObject newsArray = baseJsonResponse.getJSONObject("response");
             JSONArray articleArray = newsArray.getJSONArray("results");
+
             for (int i = 0; i < articleArray.length(); i++) {
                 JSONObject currentArticle = articleArray.getJSONObject(i);
 
-                String authorName = currentArticle.getString("sectionName");
+                JSONArray tagsArray = currentArticle.getJSONArray("tags");
+                String authorName = "";
+                if (tagsArray.length() == 0) {
+                    authorName = null;
+                } else {
+                    for (int j = 0; j < tagsArray.length(); j++) {
+                        JSONObject contributorsArray = tagsArray.getJSONObject(j);
+                        authorName = contributorsArray.getString("webTitle");
+                    }
+                }
                 String webTitle = currentArticle.getString("webTitle");
                 String date = currentArticle.getString("webPublicationDate");
                 date = formatDate(date);
                 String url = currentArticle.getString("webUrl");
 
-                News article = new News(authorName,date, webTitle, url);
+                News article = new News(authorName, date, webTitle, url);
                 newsList.add(article);
             }
 

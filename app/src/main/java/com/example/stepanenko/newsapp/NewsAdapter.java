@@ -37,7 +37,6 @@ public class NewsAdapter extends ArrayAdapter<News> {
         dateView.setText(currentArticle.getDate());
         String titleString = currentArticle.getTitle();
         titleView.setText(titleString);
-        String webLink = currentArticle.getUrl();
         return convertView;
     }
 }
