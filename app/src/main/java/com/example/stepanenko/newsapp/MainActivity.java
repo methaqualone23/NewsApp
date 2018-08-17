@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-/*        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String articlesPerPage = sharedPrefs.getString(
                 getString(R.string.settings_articles_per_page_key),
                 getString(R.string.settings_articles_per_page_default));
@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("page-size", articlesPerPage);
         uriBuilder.appendQueryParameter("order-by", orderBy);
-        uriBuilder.appendQueryParameter("api-key", token);*/
+        uriBuilder.appendQueryParameter("api-key", token);
 
         Log.v("VERIFY_ONCREATE_LOADER", "Loader created");
-        return new NewsLoader(this, GUARDIAN_WORLD_REQUEST_URL);
+        return new NewsLoader(this, uriBuilder.toString());
 
     }
 
@@ -125,5 +125,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<News>> loader) {
         Log.v("VERIFY_ONRESET_LOADER", "Loader reset");
         currentAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
