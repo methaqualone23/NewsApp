@@ -1,15 +1,20 @@
 package com.example.stepanenko.newsapp;
 
 import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,9 +24,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String GUARDIAN_WORLD_REQUEST_URL =
-            ("https://content.guardianapis.com/search?show-tags=contributor&q=world%20news&api-key=" + BuildConfig.GUARDIAN_API_TOKEN);
+            ("https://content.guardianapis.com/search");
 
     private static final int NEWS_LOADER_ID = 1;
     private NewsAdapter currentAdapter;
@@ -40,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         currentAdapter = new NewsAdapter(this, new ArrayList<News>());
         articleListView.setAdapter(currentAdapter);
         Log.v("VERIFY_INIT_LOADER", "Loader initialized");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
 
         articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,9 +71,38 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             emptyPlaceholder.setText(R.string.no_connection);
         }
     }
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals(getString(R.string.settings_articles_per_page_key)) ||
+                key.equals(getString(R.string.settings_order_by_key))){
+            currentAdapter.clear();
+            emptyPlaceholder.setVisibility(View.GONE);
+            View loadingIndicator = findViewById(R.id.progressbar);
+            loadingIndicator.setVisibility(View.VISIBLE);
+            getLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
+        }
+    }
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
+/*        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String articlesPerPage = sharedPrefs.getString(
+                getString(R.string.settings_articles_per_page_key),
+                getString(R.string.settings_articles_per_page_default));
+
+        String orderBy  = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default)
+        );
+
+        final String token = BuildConfig.GUARDIAN_API_TOKEN;
+
+        Uri baseUri = Uri.parse(GUARDIAN_WORLD_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("page-size", articlesPerPage);
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("api-key", token);*/
+
         Log.v("VERIFY_ONCREATE_LOADER", "Loader created");
         return new NewsLoader(this, GUARDIAN_WORLD_REQUEST_URL);
 
