@@ -1,7 +1,6 @@
 package com.example.stepanenko.newsapp;
 
 import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
