@@ -27,7 +27,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String GUARDIAN_WORLD_REQUEST_URL =
             ("https://content.guardianapis.com/search");
-                /*("https://content.guardianapis.com/search?show-tags=contributor&q=world%20news&api-key=" + BuildConfig.GUARDIAN_API_TOKEN);*/
 
     private static final int NEWS_LOADER_ID = 1;
     private NewsAdapter currentAdapter;
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             emptyPlaceholder.setText(R.string.no_connection);
         }
     }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals(getString(R.string.settings_articles_per_page_key)) ||

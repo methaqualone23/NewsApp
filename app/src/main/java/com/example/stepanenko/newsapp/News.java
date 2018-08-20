@@ -18,11 +18,9 @@ public class News {
         return title;
     }
 
-
     public String getUrl() {
         return url;
     }
-
 
     public News(String authorBase, String dateBase, String titleBase, String urlBase) {
         author = authorBase;
