@@ -27,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String GUARDIAN_WORLD_REQUEST_URL =
             ("https://content.guardianapis.com/search");
+                /*("https://content.guardianapis.com/search?show-tags=contributor&q=world%20news&api-key=" + BuildConfig.GUARDIAN_API_TOKEN);*/
 
     private static final int NEWS_LOADER_ID = 1;
     private NewsAdapter currentAdapter;
@@ -95,17 +96,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getString(R.string.settings_order_by_default)
         );
 
-        final String token = BuildConfig.GUARDIAN_API_TOKEN;
-
         Uri baseUri = Uri.parse(GUARDIAN_WORLD_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-        uriBuilder.appendQueryParameter("page-size", articlesPerPage);
-        uriBuilder.appendQueryParameter("order-by", orderBy);
-        uriBuilder.appendQueryParameter("api-key", token);
+        uriBuilder.appendQueryParameter("q", "world news");
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", BuildConfig.GUARDIAN_API_TOKEN);
 
-        Log.v("VERIFY_ONCREATE_LOADER", "Loader created");
-        return new NewsLoader(this, uriBuilder.toString());
+        if (!articlesPerPage.isEmpty()) {
+            uriBuilder.appendQueryParameter("page-size", articlesPerPage);
+        }
+        if (!orderBy.isEmpty()) {
+            uriBuilder.appendQueryParameter("order-by", orderBy);
+        }
 
+        Log.v("VERIFY_URI", "url: " + uriBuilder.toString());
+        return new NewsLoader(MainActivity.this, uriBuilder.toString());
     }
 
     @Override
