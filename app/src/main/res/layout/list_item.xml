@@ -5,24 +5,38 @@
     android:orientation="vertical"
     android:padding="@dimen/padding_default">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/author"
             style="@style/Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             tools:text="Author" />
 
         <TextView
-            android:id="@+id/webTitle"
-            style="@style/TextMain"
+            android:id="@+id/section"
+            style="@style/Section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Long placeholder location that should wrap to more than 2 lines of text" />
+            android:layout_alignParentRight="true"
+            tools:text="Section" />
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/date"
-            style="@style/TextDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="webPublicationDate" />
+    <TextView
+        android:id="@+id/webTitle"
+        style="@style/TextMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Long placeholder location that should wrap to more than 2 lines of text" />
+
+    <TextView
+        android:id="@+id/date"
+        style="@style/TextDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="webPublicationDate" />
 </LinearLayout>

@@ -12,8 +12,8 @@
 
     <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
     <string name="settings_order_by_label">Order by</string>
-    <string name="settings_order_by_key" translatable="false">order_by</string>
-    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_newest_value</string>
+    <string name="settings_order_by_key" translatable="false">default_order_by</string>
+    <string name="settings_order_by_default" translatable="false">newest</string>
 
     <!-- Label for order-by newest option [CHAR LIMIT=20] -->
     <string name="settings_order_by_newest_label">Newest</string>

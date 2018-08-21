@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -54,7 +56,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 News currentArticle = currentAdapter.getItem(position);
                 Uri webLink = Uri.parse(currentArticle.getUrl());
                 Intent webBrowser = new Intent(Intent.ACTION_VIEW, webLink);
-                startActivity(webBrowser);
+
+                PackageManager packageManager = getPackageManager();
+                List<ResolveInfo> activities = packageManager.queryIntentActivities(webBrowser, 0);
+                boolean isIntentSafe = activities.size() > 0;
+
+                if (isIntentSafe) {
+                    startActivity(webBrowser);
+                }
             }
         });
 
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals(getString(R.string.settings_articles_per_page_key)) ||
-                key.equals(getString(R.string.settings_order_by_key))){
+                key.equals(getString(R.string.settings_order_by_key))) {
             currentAdapter.clear();
             emptyPlaceholder.setVisibility(View.GONE);
             View loadingIndicator = findViewById(R.id.progressbar);
@@ -85,15 +94,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String articlesPerPage = sharedPrefs.getString(
                 getString(R.string.settings_articles_per_page_key),
                 getString(R.string.settings_articles_per_page_default));
 
-        String orderBy  = sharedPrefs.getString(
+        String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
-                getString(R.string.settings_order_by_default)
-        );
+                getString(R.string.settings_order_by_default));
 
         Uri baseUri = Uri.parse(GUARDIAN_WORLD_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();

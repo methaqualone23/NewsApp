@@ -126,12 +126,14 @@ public final class QueryUtils {
                         authorName = contributorsArray.getString("webTitle");
                     }
                 }
+
+                String sectionName = currentArticle.getString("sectionName");
                 String webTitle = currentArticle.getString("webTitle");
                 String date = currentArticle.getString("webPublicationDate");
                 date = formatDate(date);
                 String url = currentArticle.getString("webUrl");
 
-                News article = new News(authorName, date, webTitle, url);
+                News article = new News(authorName, sectionName, date, webTitle, url);
                 newsList.add(article);
             }
 

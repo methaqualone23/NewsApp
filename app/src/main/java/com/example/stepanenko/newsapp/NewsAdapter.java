@@ -26,6 +26,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         TextView authorView = convertView.findViewById(R.id.author);
         TextView dateView = convertView.findViewById(R.id.date);
         TextView titleView = convertView.findViewById(R.id.webTitle);
+        TextView sectionView = convertView.findViewById(R.id.section);
 
         String authorName = currentArticle.getAuthor();
         if (currentArticle.getAuthor() != null) {
@@ -35,8 +36,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
         }
 
         dateView.setText(currentArticle.getDate());
-        String titleString = currentArticle.getTitle();
-        titleView.setText(titleString);
+        titleView.setText(currentArticle.getTitle());
+        sectionView.setText(currentArticle.getSection());
         return convertView;
     }
 }
